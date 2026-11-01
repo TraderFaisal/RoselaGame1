@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ROSELA Juice Rush</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;800&family=Hind+Siliguri:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#16050f;--ink:#fff6f1;--mut:rgba(255,226,230,.72);--glass:rgba(255,255,255,.1);--edge:rgba(255,255,255,.26);--ros:#e11d48;--org:#fb923c;--lime:#a3e635;--mango:#fbbf24;--g1:#4a0a26;--g2:#5a2108;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(120% 80% at 10% 0%,var(--g1) 0,transparent 60%),radial-gradient(100% 70% at 100% 100%,var(--g2) 0,transparent 55%),var(--bg);color:var(--ink);font-family:'Poppins','Hind Siliguri',system-ui,sans-serif;overflow-x:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+.orb{position:fixed;border-radius:50%;filter:blur(70px);z-index:0;pointer-events:none;animation:drift 14s ease-in-out infinite alternate}
+.o1{width:320px;height:320px;background:var(--ros);top:-90px;left:-90px;opacity:.7}
+.o2{width:300px;height:300px;background:var(--org);bottom:-90px;right:-80px;opacity:.6;animation-delay:-5s}
+@keyframes drift{to{transform:translate(40px,-50px) scale(1.15)}}
+:root[data-theme=ocean]{--bg:#03111f;--g1:#06385c;--g2:#0a4a4a;--ros:#0ea5e9;--org:#22d3ee;--mango:#7dd3fc}
+:root[data-theme=forest]{--bg:#06140b;--g1:#0b3d1e;--g2:#3b3a08;--ros:#16a34a;--org:#84cc16;--mango:#facc15}
+:root[data-theme=grape]{--bg:#12061f;--g1:#3b0a5c;--g2:#4a0a30;--ros:#a855f7;--org:#ec4899;--mango:#f0abfc}
+:root[data-theme=gold]{--bg:#140e03;--g1:#4a3205;--g2:#3a1405;--ros:#f59e0b;--org:#fbbf24;--mango:#fde68a}
+.lbt{font-weight:700;font-size:13px;color:var(--mut);margin:12px 0 4px;text-align:left}
+#fl{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#fl span{position:absolute;bottom:0;opacity:.22;filter:blur(1px);animation:rise linear infinite}
+@keyframes rise{from{transform:translateY(0) rotate(0)}to{transform:translateY(-115vh) rotate(360deg)}}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+#app{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:16px}
+.glass{position:relative;background:linear-gradient(145deg,rgba(255,255,255,.17),rgba(255,255,255,.06));border:1px solid var(--edge);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);border-radius:28px;box-shadow:0 14px 44px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.45)}
+.screen{display:none}.screen.on{display:block;animation:in .45s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes in{from{opacity:0;transform:translateY(18px) scale(.96)}}
+.brand{text-align:center;padding:24px 20px}
+.logo{font-weight:800;font-size:44px;letter-spacing:.05em;margin:4px 0 0;background:linear-gradient(110deg,#ff5d7d,var(--org),var(--mango),#ff5d7d);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:250% 0}}
+.bn{font-family:'Hind Siliguri',sans-serif;color:var(--mut);margin:0 0 8px}
+.hero-e{font-size:68px;line-height:1;display:inline-block;filter:drop-shadow(0 8px 18px rgba(225,29,72,.7));animation:bob 2.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(6deg)}}
+p{line-height:1.55;margin:8px 0}
+.rules{list-style:none;padding:0;margin:12px 0;text-align:left;color:var(--mut);font-size:13.5px}
+.rules li{padding:6px 0 6px 30px;position:relative;line-height:1.4}
+.rules li::before{content:attr(data-i);position:absolute;left:0;top:4px;font-size:17px}
+.chip{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:99px;background:var(--glass);border:1px solid var(--edge);font-size:13px;margin:6px 0}
+.chip b{font-family:ui-monospace,Menlo,monospace;letter-spacing:.04em}
+.stats{display:flex;gap:10px;margin:10px 0}
+.stats div{flex:1;padding:10px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid var(--edge);font-size:12px;color:var(--mut)}
+.stats b{display:block;font-size:20px;color:var(--ink)}
+.tries i{font-style:normal;margin:0 2px}.tries i.x{filter:grayscale(1);opacity:.3}
+.btn{display:block;width:100%;border:0;border-radius:18px;padding:16px;font:800 16px 'Poppins',sans-serif;color:#2b0612;background:linear-gradient(135deg,var(--mango),var(--org) 55%,#ff6b8a);box-shadow:0 8px 26px rgba(251,146,60,.5),inset 0 1px 0 rgba(255,255,255,.7);cursor:pointer;text-decoration:none;text-align:center}
+.btn:active{transform:scale(.97)}
+.btn:disabled{filter:grayscale(.7);opacity:.55;box-shadow:none;cursor:not-allowed}
+.btn.ghost{background:var(--glass);color:var(--ink);box-shadow:none;border:1px solid var(--edge);margin-top:10px;font-weight:700}
+input{width:100%;padding:14px 16px;border-radius:16px;border:1px solid var(--edge);background:rgba(255,255,255,.1);color:var(--ink);font:600 16px 'Poppins',sans-serif;margin:8px 0;outline:0;user-select:text;-webkit-user-select:text}
+input:focus{border-color:var(--mango)}
+#acc{text-transform:uppercase;letter-spacing:.06em;font-family:ui-monospace,Menlo,monospace;text-align:center}
+.err{color:#ff8fa3;font-size:13px;min-height:20px;margin:4px 0}
+.hud{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;margin-bottom:10px;font-weight:700;font-size:13px}
+.hud b{font-size:18px}
+.pw{display:flex;gap:8px;margin-bottom:10px;align-items:center}
+.pw .sc{flex:1;font-weight:800;font-size:15px;padding-left:4px}
+.pw small{color:var(--mango);font-weight:700;margin-left:6px}
+.pb{border:1px solid var(--edge);background:var(--glass);color:var(--ink);border-radius:14px;padding:9px 12px;font:700 13px 'Poppins',sans-serif;cursor:pointer}
+.pb:disabled{opacity:.35}
+.stage{padding:16px;text-align:center}
+.ticket{min-height:54px;display:flex;justify-content:center;gap:6px;flex-wrap:wrap;align-items:center}
+.slot{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;font-size:24px;background:rgba(255,255,255,.1);border:1px dashed var(--edge)}
+.slot.ok{border-style:solid;background:rgba(163,230,53,.22);animation:pop .3s}
+@keyframes pop{50%{transform:scale(1.25)}}
+.memo{height:8px;border-radius:9px;background:rgba(255,255,255,.12);overflow:hidden;margin:8px 0}
+.memo i{display:block;height:100%;width:100%;background:linear-gradient(90deg,var(--lime),var(--mango),var(--ros))}
+.hint{color:var(--mut);font-size:12.5px;min-height:34px;margin:2px 0}
+.jar{height:100px;width:84px;margin:4px auto 8px;border-radius:14px 14px 36px 36px;border:2px solid var(--edge);position:relative;overflow:hidden;background:rgba(255,255,255,.06);box-shadow:inset 0 0 24px rgba(255,255,255,.18),0 0 30px rgba(251,146,60,.2)}
+.layers{position:absolute;inset:0;display:flex;flex-direction:column-reverse}
+.layers div{flex:0 0 0;transition:flex-basis .45s cubic-bezier(.3,1.4,.5,1)}
+.jar.blend{animation:sh .12s infinite}
+@keyframes sh{50%{transform:translateX(3px) rotate(2deg)}}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:6px}
+.fruit{aspect-ratio:1;border-radius:20px;border:1px solid var(--edge);background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.05));font-size:32px;cursor:pointer;color:inherit;padding:0;animation:gp .4s backwards}
+@keyframes gp{from{transform:scale(0) rotate(-40deg)}}
+.fruit:active{transform:scale(.9)}
+.fruit:disabled{opacity:.3}
+.fly{position:fixed;font-size:34px;z-index:7;pointer-events:none}
+.bar{position:relative;height:38px;border-radius:99px;background:rgba(255,255,255,.12);margin:16px 6px 20px;border:1px solid var(--edge)}
+.zone{position:absolute;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,#bef264,#84cc16);box-shadow:0 0 18px rgba(163,230,53,.8)}
+.mk{position:absolute;top:-6px;bottom:-6px;width:8px;margin-left:-4px;border-radius:4px;background:#fff;box-shadow:0 0 16px #fff}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 14px);transform:translateX(-50%) translateY(-100px);padding:10px 18px;border-radius:99px;font-weight:700;font-size:14px;z-index:8;transition:transform .3s cubic-bezier(.3,1.5,.5,1);background:rgba(40,8,24,.9);border:1px solid var(--edge);white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
+#thm,#snd{position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:9;width:42px;height:42px;border-radius:50%;padding:0;font-size:18px}
+#thm{right:60px}
+.coupon{margin:14px 0;padding:18px;border-radius:22px;border:2px dashed rgba(255,255,255,.5);background:rgba(255,255,255,.08)}
+.pct{font-size:60px;font-weight:800;line-height:1;background:linear-gradient(120deg,var(--mango),#ff5d7d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.code{font:700 21px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.08em;margin-top:8px;word-break:break-all;user-select:text;-webkit-user-select:text}
+.shake{animation:sk .35s}
+@keyframes sk{25%{transform:translateX(-9px)}75%{transform:translateX(9px)}}
+.adm{text-align:left;padding:20px 16px}
+.adm h3{margin:18px 0 6px;font-size:15px}
+.ar{display:flex;gap:8px}.ar input{margin:8px 0}.ar .btn{width:auto;padding:0 18px;margin:8px 0}
+.lst{max-height:220px;overflow:auto;margin-top:6px}
+.it{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 10px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid var(--edge);margin:6px 0;font:600 13px ui-monospace,Menlo,monospace;user-select:text;-webkit-user-select:text}
+.it small{display:block;font:500 11px 'Poppins',sans-serif;color:var(--mut)}
+.it .pb{padding:6px 9px}
+.lnk{background:none;border:0;color:var(--mut);font:600 12px 'Poppins',sans-serif;margin-top:14px;cursor:pointer;text-decoration:underline}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+button:focus-visible,a:focus-visible{outline:3px solid var(--mango);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div>
+<div id="fl"></div><canvas id="fx"></canvas>
+<div class="toast" id="toast"></div>
+<button class="pb" id="thm" aria-label="Change theme">🎨</button><button class="pb" id="snd" aria-label="Toggle sound">🔊</button>
+<main id="app">
+
+<section class="screen glass brand" id="s-login">
+  <div class="hero-e">💸</div>
+  <h1 class="logo">ROSELA</h1>
+  <p class="bn">Juice Rush · রসেলা জুস চ্যালেঞ্জ</p>
+  <p>Enter your access code to play. Codes look like <b>RSL-FSL-XXXXXX</b>.</p>
+  <input id="acc" maxlength="20" placeholder="RSL-FSL-XXXXXX" autocomplete="off" autocapitalize="characters">
+  <input id="nick" maxlength="14" placeholder="Your nickname (optional)" autocomplete="off">
+  <div class="err" id="lerr"></div>
+  <button class="btn" id="mk1" disabled>Connecting…</button>
+  <button class="lnk" id="toAdm">Admin</button>
+</section>
+
+<section class="screen glass brand" id="s-home">
+  <div class="hero-e">💸</div>
+  <h1 class="logo">ROSELA</h1>
+  <p class="bn">Juice Rush · রসেলা জুস চ্যালেঞ্জ</p>
+  <div class="chip">👤 <span id="who"></span> <b id="uid"></b></div>
+  <div class="stats">
+    <div>Try today<b class="tries" id="tries"></b></div>
+    <div>Best score<b id="best">0</b></div>
+  </div>
+  <ul class="rules">
+    <li data-i="👀">Memorize a long recipe before it vanishes. Decoy fruits everywhere.</li>
+    <li data-i="🍓">Tap in order. Wrong tap = lose a life and 3 seconds.</li>
+    <li data-i="⚡">Stop the blender in a tiny green zone. Final order is a triple-blend boss.</li>
+    <li data-i="🏆">Serve 8 orders in 100 s with only 2 lives. One try per day. Win a 1-20% promo code.</li>
+  </ul>
+  <div id="cbox"></div>
+  <div id="lb"></div>
+  <button class="btn" id="go"></button>
+  <p class="bn" id="cd" style="margin-top:10px"></p>
+  <button class="lnk" id="out">Log out</button>
+</section>
+
+<section class="screen" id="s-play">
+  <div class="glass hud"><span>Order <b id="r">1</b>/8</span><span id="lives"></span><span><b id="t">100</b>s</span></div>
+  <div class="pw"><div class="sc"><span id="sc">0</span><small id="cb"></small></div><button class="pb" id="pk">👁 Peek</button><button class="pb" id="ic">❄ +5s</button></div>
+  <div class="glass stage">
+    <div class="ticket" id="ticket"></div>
+    <div class="memo"><i id="memo"></i></div>
+    <div class="hint" id="hint"></div>
+    <div class="jar" id="jar"><div class="layers" id="layers"></div></div>
+    <div id="pickUI"><div class="grid" id="grid"></div></div>
+    <div id="blendUI" style="display:none">
+      <div class="bar"><div class="zone" id="zone"></div><div class="mk" id="mk"></div></div>
+      <button class="btn" id="blendBtn">BLEND!</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen glass brand" id="s-win">
+  <div class="hero-e">🏆</div>
+  <h2 class="logo" style="font-size:32px">You made it!</h2>
+  <p class="bn">অভিনন্দন! আপনার কুপন নিচে</p>
+  <p>Score <b id="wsc"></b></p>
+  <div class="coupon"><div class="pct" id="wp"></div><div class="bn" style="margin:0">off your order</div><div class="code" id="wc"></div></div>
+  <button class="btn" data-copy="1">Copy code</button>
+  <a class="btn ghost" href="https://roselabd.lovable.app" target="_blank" rel="noopener">Order on ROSELA</a>
+  <button class="btn ghost" id="h1">Back to home</button>
+</section>
+
+<section class="screen glass brand" id="s-lose">
+  <div class="hero-e">🥤</div>
+  <h2 class="logo" style="font-size:30px">Out of juice</h2>
+  <p id="lm"></p>
+  <button class="btn" id="h2">Back to home</button>
+</section>
+
+<section class="screen glass adm" id="s-adm">
+  <h2 class="logo" style="font-size:28px;text-align:center">Admin Panel</h2>
+  <div id="adLock">
+    <input id="apw" type="password" placeholder="Admin password" autocomplete="off">
+    <div class="err" id="aerr"></div>
+    <button class="btn" id="alog">Unlock</button>
+  </div>
+  <div id="adBox" style="display:none">
+    <h3>🔑 Access codes</h3>
+    <div class="ar"><input id="gn" type="number" min="1" max="20" value="1" style="max-width:90px"><button class="btn" id="gen">Generate</button></div>
+    <div class="lst" id="cl"></div>
+    <h3>🎟 Promo codes (1-20%)</h3>
+    <input id="pc" placeholder="Promo code e.g. ROSELA10" autocapitalize="characters">
+    <div class="ar"><input id="pp" type="number" min="1" max="20" placeholder="Discount %"><input id="pm" type="number" min="1" value="1" placeholder="Max players"><button class="btn" id="padd">Add</button></div>
+    <div class="lst" id="pl"></div>
+  </div>
+  <button class="btn ghost" id="aback">Back</button>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+const ADMIN_PW='FaisalAhmed360@';
+const F=[{e:'🍓',c:'#ef4444'},{e:'🍊',c:'#fb923c'},{e:'🍋',c:'#fde047'},{e:'🥭',c:'#fbbf24'},{e:'🍍',c:'#facc15'},{e:'🍇',c:'#8b5cf6'},{e:'🥝',c:'#84cc16'},{e:'🍉',c:'#f43f5e'},{e:'🍎',c:'#be123c'},{e:'🍌',c:'#fde68a'},{e:'🍒',c:'#9f1239'},{e:'🍑',c:'#fdba74'}];
+const TOTAL=8,TIME=100,LIVES=2,KEY='rosela_s3';
+const MODS={3:'Mix-up: grid reshuffles after every tap',5:'Rush: very little time to memorize',6:'Mix-up + Rush',8:'Boss: blend 3 times!'};
+let DB=null,P,lives,round,left,recipe,pos,phase,tick,raf,zc,zw,speed,t0,order,score,combo,blends,pos2=0,peeked,iced,sound=true,mixup,adminOn=false;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id===id))}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1700)}
+
+/* sound */
+let AC;function ac(){if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC}
+function tone(f,d=.15,type='sine',v=.15,slide=0,delay=0){if(!sound)return;const c=ac();if(!c)return;const t=c.currentTime+delay,o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.02)}
+const N=[523,587,659,784,880,1047,1175,1319];
+const sfx={tap:n=>tone(N[n%8],.2,'triangle',.18),bad:()=>{tone(190,.4,'sawtooth',.18,-100);tone(130,.45,'square',.08,-60,.05)},blend:()=>{for(let i=0;i<9;i++)tone(130+i*28,.1,'sawtooth',.06,50,i*.085)},ok:()=>[659,784,988].forEach((f,i)=>tone(f,.2,'triangle',.18,0,i*.08)),win:()=>[523,659,784,1047,1319,1568].forEach((f,i)=>tone(f,.4,'triangle',.2,0,i*.12)),click:()=>tone(440,.07,'sine',.1),tick:()=>tone(900,.05,'square',.05),pow:()=>tone(400,.3,'sine',.18,500)};
+$('snd').onclick=()=>{sound=!sound;$('snd').textContent=sound?'🔊':'🔇';if(sound)sfx.click()};
+
+/* particles */
+const cv=$('fx'),cx=cv.getContext('2d');let ps=[],run=false;
+function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();addEventListener('resize',rs);
+function burst(x,y,cols,n=18,up=0){for(let i=0;i<n;i++){const a=Math.random()*6.283,s=2+Math.random()*5;ps.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-up,l:1,c:cols[i%cols.length],r:3+Math.random()*5})}if(!run){run=true;requestAnimationFrame(fx)}}
+function fx(){cx.clearRect(0,0,cv.width,cv.height);ps=ps.filter(p=>p.l>0);for(const p of ps){p.x+=p.vx;p.y+=p.vy;p.vy+=.15;p.l-=.016;cx.globalAlpha=Math.max(p.l,0);cx.fillStyle=p.c;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.283);cx.fill()}if(ps.length)requestAnimationFrame(fx);else{run=false;cx.clearRect(0,0,cv.width,cv.height)}}
+function confetti(){const cols=['#e11d48','#fb923c','#fbbf24','#a3e635','#fff'];let k=0;const h=setInterval(()=>{burst(Math.random()*innerWidth,innerHeight*.35,cols,26,5);if(++k>9)clearInterval(h)},220)}
+function fly(btn,f){const a=btn.getBoundingClientRect(),b=$('jar').getBoundingClientRect();const el=document.createElement('div');el.className='fly';el.textContent=f.e;const x=a.left+a.width/2,y=a.top+a.height/2;el.style.left=x+'px';el.style.top=y+'px';document.body.appendChild(el);const dx=b.left+b.width/2-x,dy=b.top+30-y;el.animate([{transform:'translate(-50%,-50%) scale(1)'},{transform:`translate(calc(-50% + ${dx*.5}px),calc(-50% + ${dy-70}px)) scale(1.4)`,offset:.5},{transform:`translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px)) scale(.5)`}],{duration:520,easing:'ease-in'}).onfinish=()=>{el.remove();burst(b.left+b.width/2,b.top+30,[f.c,'#fff'],14)}}
+(function(){const fl=$('fl');for(let i=0;i<14;i++){const s=document.createElement('span');s.textContent=F[i%12].e;s.style.cssText=`left:${Math.random()*100}%;font-size:${20+Math.random()*26}px;animation-duration:${16+Math.random()*16}s;animation-delay:-${Math.random()*30}s`;fl.appendChild(s)}})();
+
+/* ---------- database + login ---------- */
+const AL='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function rnd(n){const b=new Uint8Array(n);crypto.getRandomValues(b);return[...b].map(x=>AL[x%32]).join('')}
+function today(){return new Date().toLocaleDateString('en-CA')}
+/* Firebase Realtime Database via REST (no SDK needed) */
+const FB='https://fsl-b8edb-default-rtdb.firebaseio.com';
+const rq=(m,p,b)=>fetch(`${FB}/${p}.json`,{method:m,headers:{'Content-Type':'application/json'},body:b===undefined?undefined:JSON.stringify(b)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json()});
+const snap=(id,v)=>({id,exists:v!=null,data:()=>v==null?undefined:v});
+const mkDoc=p=>({get:async()=>snap(p.split('/').pop(),await rq('GET',p)),set:d=>rq('PUT',p,d),update:d=>rq('PATCH',p,d),delete:()=>rq('DELETE',p)});
+const pack=docs=>({docs,size:docs.length,empty:!docs.length});
+function mkCol(p){const c={doc:id=>mkDoc(p+'/'+id),
+  get:async()=>pack(Object.entries(await rq('GET',p)||{}).map(([k,x])=>snap(k,x))),
+  where:(f,o,v)=>({get:async()=>pack((await c.get()).docs.filter(d=>d.data()[f]===v))}),
+  onSnapshot(next,err){let on=true;const t=async()=>{if(!on)return;try{next(await c.get())}catch(e){err&&err(e)}if(on)setTimeout(t,4000)};t();return()=>{on=false}}};return c}
+const DBX={doc:mkDoc,collection:mkCol};
+const hid=c=>{let h=5381;for(const ch of c)h=(h*33^ch.charCodeAt(0))>>>0;return h.toString(36)};
+async function lb(){try{const v=await rq('GET','board')||{};const a=Object.values(v).sort((x,y)=>y.best-x.best).slice(0,5);$('lb').innerHTML=a.length?'<div class="lbt">🏅 Top players</div>'+a.map((x,i)=>`<div class="it"><span>${['🥇','🥈','🥉','4️⃣','5️⃣'][i]} ${esc(x.name)}</span><b>${esc((+x.best||0).toLocaleString())}</b></div>`).join(''):''}catch(e){}}
+const cref=c=>DB.doc('codes/'+c);
+function remember(c){try{c?localStorage.setItem(KEY,c):localStorage.removeItem(KEY)}catch(e){}}
+function recall(){try{return localStorage.getItem(KEY)}catch(e){return null}}
+async function boot(){
+  
+  DB=DBX;const b=$('mk1');
+  if(!DB){b.textContent='Server unavailable';$('lerr').textContent='Could not connect to the database. Please reload the page.';return}
+  b.disabled=false;b.textContent='Login';
+  const c=recall();if(c){try{const s=await cref(c).get();if(s.exists){P={code:c,...s.data()};return home()}remember(null)}catch(e){}}
+}
+async function login(){
+  const code=$('acc').value.trim().toUpperCase(),e=$('lerr');e.textContent='';
+  if(!/^RSL-FSL-[A-Z0-9]{4,10}$/.test(code)){e.textContent='Invalid format. Use RSL-FSL-XXXXXX';return}
+  const b=$('mk1');b.disabled=true;b.textContent='Checking…';ac();
+  try{
+    const s=await cref(code).get();
+    if(!s.exists){e.textContent='Access code not found.';$('mk1').parentElement.classList.add('shake');setTimeout(()=>$('mk1').parentElement.classList.remove('shake'),350);return}
+    P={code,...s.data()};const nm=$('nick').value.trim().slice(0,14);
+    if(nm&&!P.name){P.name=nm;await cref(code).update({name:nm})}
+    remember(code);sfx.ok();home();
+  }catch(x){e.textContent='Network error. Try again.'}
+  finally{b.disabled=false;b.textContent='Login'}
+}
+$('mk1').onclick=login;$('acc').addEventListener('keydown',e=>{if(e.key==='Enter')login()});
+$('out').onclick=()=>{remember(null);P=null;$('acc').value='';show('s-login')};
+
+function home(){
+  const done=P.day===today(),l=done?0:1;
+  $('who').textContent=P.name||'Player';$('uid').textContent=P.code;$('best').textContent=P.best||0;
+  $('tries').innerHTML=`<i class="${l?'':'x'}">🍹</i>`;
+  $('cbox').innerHTML=P.coupon?`<div class="coupon"><div class="bn" style="margin:0">Your promo · ${esc(P.coupon.pct)}% off</div><div class="code">${esc(P.coupon.code)}</div></div><button class="btn ghost" data-copy="1" style="margin:0 0 10px">Copy code</button><a class="btn ghost" style="margin:0 0 10px" href="https://roselabd.lovable.app" target="_blank" rel="noopener">Order on ROSELA</a>`:'';
+  const b=$('go');b.disabled=!!P.coupon||!l;b.textContent=P.coupon?'Promo already claimed ✓':!l?'Try used today':'Start challenge · 1 try';
+  show('s-home');cd();lb()}
+function cd(){const h=$('s-home');if(!h.classList.contains('on')||!P)return;if(!P.coupon&&P.day===today()){const n=new Date(),m=new Date(n);m.setHours(24,0,0,0);const d=Math.max(0,m-n)/1000|0,p=x=>String(x).padStart(2,'0');$('cd').textContent=`New try in ${p(d/3600|0)}:${p(d%3600/60|0)}:${p(d%60)}`}else{$('cd').textContent='';if(!P.coupon&&P.day&&P.day!==today()&&$('go').disabled)home()}}
+setInterval(cd,1000);
+document.addEventListener('click',async e=>{const b=e.target.closest('[data-copy]');if(!b||!P||!P.coupon)return;sfx.click();try{await navigator.clipboard.writeText(P.coupon.code);toast('Code copied ✓')}catch(x){toast('Press and hold the code to copy')}});
+
+/* ---------- game (harder) ---------- */
+async function start(){
+  ac();$('go').disabled=true;
+  try{const s=await cref(P.code).get();if(!s.exists){toast('Code removed by admin');return $('out').click()}
+    P={code:P.code,...s.data()};
+    if(P.coupon||P.day===today()){home();return toast('Already played today')}
+    P.day=today();P.plays=(P.plays||0)+1;await cref(P.code).update({day:P.day,plays:P.plays});
+  }catch(e){$('go').disabled=false;return toast('Network error')}
+  lives=LIVES;round=1;left=TIME;score=0;combo=0;peeked=iced=false;$('pk').disabled=$('ic').disabled=false;addScore(0);
+  clearInterval(tick);let sec=-1;tick=setInterval(()=>{left-=.1;const c=Math.ceil(Math.max(0,left));$('t').textContent=c;if(left<=10&&c!==sec&&left>0){sec=c;sfx.tick()}if(left<=0)end(false,'Time is up. The queue went home thirsty.')},100);
+  show('s-play');sfx.ok();next()}
+function addScore(n){score+=n;$('sc').textContent=score.toLocaleString();$('cb').textContent=combo>1?`🔥 x${(1+Math.min(combo,12)*.1).toFixed(1)}`:''}
+function hearts(){$('lives').textContent='❤️'.repeat(lives)+'🖤'.repeat(LIVES-lives);$('r').textContent=round}
+function renderTicket(reveal){$('ticket').innerHTML=recipe.map((f,i)=>i<pos?`<div class="slot ok">${f.e}</div>`:`<div class="slot">${reveal?f.e:'❓'}</div>`).join('')}
+function renderGrid(dis){$('grid').innerHTML=order.map((f,i)=>`<button class="fruit" ${dis?'disabled':''} data-i="${i}" style="animation-delay:${i*30}ms" aria-label="fruit">${f.e}</button>`).join('')}
+function next(){
+  cancelAnimationFrame(raf);hearts();
+  const len=4+Math.floor((round-1)/2);
+  order=shuffle(F);recipe=shuffle(F).slice(0,len);pos=0;phase='show';mixup=round===3||round===6;
+  $('jar').classList.remove('blend');$('blendUI').style.display='none';$('pickUI').style.display='block';
+  $('layers').innerHTML=recipe.map(()=>'<div></div>').join('');
+  renderGrid(true);renderTicket(true);
+  let ms=600+len*450;if(round>=5)ms*=.72;
+  $('hint').textContent='Memorize the recipe…'+(MODS[round]?` ⚠ ${MODS[round]}`:'');
+  const m=$('memo');m.style.transition='none';m.style.width='100%';m.offsetWidth;m.style.transition=`width ${ms}ms linear`;m.style.width='0%';
+  const my=round;setTimeout(()=>{if(phase!=='show'||my!==round)return;phase='pick';renderTicket(false);$('hint').textContent='Now tap them in order!'+(MODS[round]?` ⚠ ${MODS[round]}`:'');renderGrid(false)},ms);
+}
+$('grid').addEventListener('click',e=>{
+  const b=e.target.closest('.fruit');if(!b||phase!=='pick')return;
+  const f=order[+b.dataset.i];
+  if(f===recipe[pos]){
+    sfx.tap(pos);combo++;addScore(Math.round(100*(1+Math.min(combo,12)*.1)));fly(b,f);
+    const L=$('layers').children[pos];L.style.background=`linear-gradient(180deg,${f.c},${f.c}bb)`;L.style.flexBasis=(100/recipe.length)+'%';
+    pos++;renderTicket(false);b.disabled=true;
+    if(pos===recipe.length){phase='blend';setTimeout(startBlend,600)}
+    else if(mixup){order=shuffle(F);renderGrid(false)}
+  }else fail('Wrong fruit!');
+});
+$('pk').onclick=()=>{if(phase!=='pick'||peeked)return;peeked=true;$('pk').disabled=true;sfx.pow();renderTicket(true);setTimeout(()=>{if(phase==='pick')renderTicket(false)},1000)};
+$('ic').onclick=()=>{if(phase==='end'||iced||!tick)return;iced=true;$('ic').disabled=true;left+=5;sfx.pow();toast('❄ +5 seconds')};
+function setZone(){zw=Math.max(.07,.2-.018*round);zc=zw/2+.04+Math.random()*(.92-zw);speed=1.1+.25*round;const z=$('zone');z.style.left=((zc-zw/2)*100)+'%';z.style.width=(zw*100)+'%'}
+function startBlend(){
+  if(phase!=='blend')return;
+  $('pickUI').style.display='none';$('blendUI').style.display='block';$('memo').style.width='0%';
+  blends=round===TOTAL?3:1;setZone();
+  $('hint').textContent=blends>1?'BOSS: hit the green zone 3 times!':'Tap BLEND when the marker is inside the green zone';
+  t0=performance.now();
+  const loop=n=>{const m=((n-t0)/1000*speed)%2;pos2=m<1?m:2-m;$('mk').style.left=(pos2*100)+'%';raf=requestAnimationFrame(loop)};
+  raf=requestAnimationFrame(loop);
+}
+$('blendBtn').addEventListener('click',()=>{
+  if(phase!=='blend')return;const d=Math.abs(pos2-zc);
+  if(d<=zw/2){
+    phase='mix';sfx.blend();$('jar').classList.add('blend');
+    const r=$('mk').getBoundingClientRect();burst(r.left,r.top,['#fff','#a3e635','#fbbf24'],26);
+    const bonus=200+Math.round((1-d/(zw/2))*300);addScore(bonus);toast(bonus>=450?'PERFECT! 🍹 +'+bonus:'Nice blend +'+bonus);
+    setTimeout(()=>{$('jar').classList.remove('blend');sfx.ok();
+      if(blends>1){blends--;phase='blend';setZone();$('hint').textContent=`${blends} more hit${blends>1?'s':''}!`}
+      else{cancelAnimationFrame(raf);round++;if(round>TOTAL)end(true);else next()}},700);
+  }else fail('Missed the zone!');
+});
+function fail(m){
+  if(phase==='fail'||phase==='end')return;phase='fail';cancelAnimationFrame(raf);lives--;combo=0;left-=3;addScore(0);hearts();toast(m+' −1 ❤️ −3s');sfx.bad();try{navigator.vibrate&&navigator.vibrate(200)}catch(e){}
+  $('app').classList.add('shake');setTimeout(()=>$('app').classList.remove('shake'),350);
+  if(lives<=0)setTimeout(()=>end(false,'No lives left. The blender needs a rest.'),700);
+  else setTimeout(()=>{if(phase==='fail')next()},950);
+}
+async function end(win,msg){
+  if(phase==='end')return;clearInterval(tick);tick=0;cancelAnimationFrame(raf);phase='end';
+  if(win)score+=Math.round(left*10);
+  P.best=Math.max(P.best||0,score);DB.doc('board/'+hid(P.code)).set({name:P.name||'Player',best:P.best}).catch(()=>{});
+  const lose=t=>{$('lm').textContent=t;show('s-lose')};
+  try{
+    if(!win){await cref(P.code).update({best:P.best});return lose(`${msg} You reached order ${Math.min(round,TOTAL)} of ${TOTAL} with ${score.toLocaleString()} points. Come back tomorrow!`)}
+    const q=await DB.collection('promos').where('used','==',false).get();
+    if(q.empty){P.day='';await cref(P.code).update({best:P.best,day:''});return lose('You won, but no promo codes are available right now. Your try was refunded. Please try again later.')}
+    const d=q.docs[Math.random()*q.size|0],pd=d.data();
+    const cnt=(pd.count||0)+1;await DB.doc('promos/'+d.id).update({count:cnt,used:cnt>=(pd.max||1),usedBy:[...(Array.isArray(pd.usedBy)?pd.usedBy:[]),P.code]});
+    P.coupon={pct:pd.pct,code:pd.code};
+    await cref(P.code).update({best:P.best,coupon:P.coupon});
+    $('wsc').textContent=score.toLocaleString();$('wp').textContent=P.coupon.pct+'%';$('wc').textContent=P.coupon.code;show('s-win');sfx.win();confetti();
+  }catch(e){lose('Network error while saving your result. Please contact admin with your access code: '+P.code)}
+}
+$('go').onclick=start;$('h1').onclick=$('h2').onclick=()=>{sfx.click();home()};
+
+/* ---------- admin panel ---------- */
+$('toAdm').onclick=()=>{$('apw').value='';$('aerr').textContent='';show('s-adm')};
+$('aback').onclick=()=>{P&&P.code?home():show('s-login')};
+$('alog').onclick=()=>{
+  if($('apw').value!==ADMIN_PW){$('aerr').textContent='Wrong password.';return}
+  if(!DB){$('aerr').textContent='Database not connected. Reload.';return}
+  $('adLock').style.display='none';$('adBox').style.display='block';
+  if(adminOn)return;adminOn=true;
+  DB.collection('codes').onSnapshot(s=>{
+    $('cl').innerHTML=s.docs.length?s.docs.map(d=>{const x=d.data();return`<div class="it"><span>${esc(d.id)}<small>${esc(x.name||'—')} · ${x.coupon?'won '+esc(x.coupon.pct)+'% ('+esc(x.coupon.code)+')':x.day?'played '+esc(x.day):'unused'}</small></span><span><button class="pb" data-cp="${esc(d.id)}">Copy</button> <button class="pb" data-del="codes/${esc(d.id)}">✕</button></span></div>`}).join(''):'<p class="bn">No codes yet.</p>'
+  },()=>toast('Cannot read codes'));
+  DB.collection('promos').onSnapshot(s=>{
+    $('pl').innerHTML=s.docs.length?s.docs.map(d=>{const x=d.data();return`<div class="it"><span>${esc(x.code)} · ${esc(x.pct)}%<small>${esc(x.count||0)}/${esc(x.max||1)} players${x.used?' · full':' · available'}</small></span><button class="pb" data-del="promos/${esc(d.id)}">✕</button></div>`}).join(''):'<p class="bn">No promo codes yet.</p>'
+  },()=>toast('Cannot read promos'));
+};
+$('gen').onclick=async()=>{
+  const n=Math.min(20,Math.max(1,+$('gn').value||1));$('gen').disabled=true;
+  try{for(let i=0;i<n;i++){await cref('RSL-FSL-'+rnd(6)).set({created:Date.now(),name:'',day:'',coupon:null,best:0,plays:0})}toast(n+' code(s) created ✓')}catch(e){toast('Failed to create codes')}
+  $('gen').disabled=false};
+$('padd').onclick=async()=>{
+  const c=$('pc').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,''),p=Math.round(+$('pp').value),m=Math.round(+$('pm').value);
+  if(!c||!(p>=1&&p<=20)||!(m>=1))return toast('Enter code, 1-20% and max players');
+  try{await DB.doc('promos/'+c).set({code:c,pct:p,max:m,count:0,used:false,usedBy:[]});$('pc').value=$('pp').value='';$('pm').value=1;toast('Promo added ✓')}catch(e){toast('Failed to add promo')}};
+$('s-adm').addEventListener('click',async e=>{
+  const d=e.target.closest('[data-del]'),c=e.target.closest('[data-cp]');
+  if(d){try{await DB.doc(d.dataset.del).delete()}catch(x){toast('Delete failed')}}
+  if(c){try{await navigator.clipboard.writeText(c.dataset.cp);toast('Copied ✓')}catch(x){toast(c.dataset.cp)}}
+});
+const TH=['rose','ocean','forest','grape','gold'],THN=['Rose','Ocean','Forest','Grape','Gold'];
+function setTheme(t){document.documentElement.dataset.theme=t;try{localStorage.setItem('rosela_theme',t)}catch(e){}}
+let ti=0;try{ti=Math.max(0,TH.indexOf(localStorage.getItem('rosela_theme')))}catch(e){}setTheme(TH[ti]);
+$('thm').onclick=()=>{ti=(ti+1)%TH.length;setTheme(TH[ti]);sfx.click();toast('🎨 '+THN[ti])};
+boot();show('s-login');
+</script>
+</body>
+</html>
